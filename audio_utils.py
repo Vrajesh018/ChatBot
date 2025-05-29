@@ -29,7 +29,7 @@ class Recognizer:
         
 
         # Initializing vosk
-        model = Model("/home/vrajesh/Desktop/Languages/Projects/Speech Assistant/vosk-model-small-en-in-0.4")
+        # model = Model("/home/vrajesh/Desktop/Languages/Projects/Speech Assistant/vosk-model-small-en-in-0.4")
         model = Model(f"{self.Dir}/vosk-model-small-en-in-0.4")
         self.recognizer = KaldiRecognizer(model, 16000)
     
@@ -47,16 +47,20 @@ class Recognizer:
         self.mic.terminate()
     
         
-    def record(self, frames= frames ) -> None:
+    def record(self, frames ) -> None:
         # print("Recording...")
         WAVE_OUTPUT_FILENAME = f"{self.Thread.file_name}.wav"
-        # Save the recorded data as a WAV file 
-        with wave.open(f"{self.Dir}/user_input_audio/{WAVE_OUTPUT_FILENAME}", "wb") as wavfile:
-            wavfile.setnchannels(1)
-            wavfile.setsampwidth(self.mic.get_sample_size(FORMAT))
-            wavfile.setframerate(16000)
-            wavfile.writeframes(b''.join(frames))
-        # print("Finished Recording...")
+        try:
+            # Save the recorded data as a WAV file 
+            with wave.open(f"{self.Dir}/recorded_audio/{WAVE_OUTPUT_FILENAME}", "wb") as wavfile:
+                wavfile.setnchannels(1)
+                wavfile.setsampwidth(self.mic.get_sample_size(FORMAT))
+                wavfile.setframerate(16000)
+                wavfile.writeframes(b''.join(frames))
+            # print("Finished Recording...")
+        except FileNotFoundError:
+            os.makedirs(f"{self.Dir}/recorded_audio")
+            self.record(Recognizer.frames)
         Recognizer.frames = []
 
     def backend_loop(self, receive_queue, send_queue):
