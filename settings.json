@@ -1,0 +1,13 @@
+{
+    "user": "Vrajesh",
+    "appearance_mode": "dark",
+    "mode_num": 1,
+    "rate": 125,
+    "voice": "male",
+    "mic_listening": true,
+    "canvas_bg": false,
+    "font_size": 18.0,
+    "new_session": true,
+    "timer": 20,
+    "default_timer": 20
+}
